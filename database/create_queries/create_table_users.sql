@@ -11,7 +11,7 @@ CREATE TABLE users (
     last_name VARCHAR(50) NOT NULL,
     password_last_updated TIMESTAMP WITH TIME ZONE,
     datetime_registered TIMESTAMP WITH TIME ZONE NOT NULL,
-    last_login TIMESTAMP TIMESTAMP WITH TIME ZONE,
+    last_login TIMESTAMP WITH TIME ZONE,
     security_question VARCHAR(255) NOT NULL,
     security_answer_hash VARCHAR(255) NOT NULL
 );
