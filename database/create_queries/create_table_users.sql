@@ -1,9 +1,13 @@
 /*
-	Create script for users table, for use in Registration story
+ * Create script for users table, for use in Registration story
+ * Updated 2026.02.24 with best practices
  */
 
+--Uncomment below line if need to drop users table before creation
+--DROP TABLE IF EXISTS users;
+
 CREATE TABLE IF NOT EXISTS users (
-    user_id PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    user_id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     email TEXT UNIQUE NOT NULL,
     password_hash TEXT NOT NULL,
     salt TEXT NOT NULL,
