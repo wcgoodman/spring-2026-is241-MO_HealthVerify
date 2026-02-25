@@ -8,7 +8,7 @@
     <!-- External CSS -->
     <link rel="stylesheet" href="style/mainStyles.css" />
     <style>
-      
+      .error-message { color: red; font-weight: 700; }
     </style>
   </head>
 
@@ -16,7 +16,7 @@
     <!-- Header -->
     <div class="top-header">
       <!-- Logo Source: -->
-      <div class="logo"><img src="img/missouriDSSLogo.png" alt="Logo of Missouri Department of Social Services"></div>
+      <div class="logo"><img src="img/missouriDSSLogo.png" alt="Image courtesy of Missouri Department of Social Services."></div>
 
       <div class="top-links">
         <a class="top-link" href="https://dss.mo.gov">DSS</a>
@@ -47,10 +47,10 @@
       <div class="form-box">
         <form id="signupForm">
           <label>First Name</label>
-          <input type="text" required />
+          <input type="text" id="firstName" required />
 
           <label>Last Name</label>
-          <input type="text" required />
+          <input type="text" id="lastName" required />
 
           <label>Email Address</label>
           <input type="text" id="email" required />
@@ -62,7 +62,11 @@
               >Show Password</span
             >
           </label>
-          <input type="password" id="password" required />
+          <input type="password" id="password" required minlength="8" maxlength="64"/>
+          <div id="passwordTooltip" class="password-tooltip" role="tooltip" aria-hidden="true">
+            Passwords must be between 8 and 64 characters long.<br>
+            Regex for validating this rule is /^.{8,64}$/
+          </div>
 
           <label
             >Confirm Password
@@ -70,10 +74,10 @@
               >Show Password</span
             >
           </label>
-          <input type="password" id="confirmPassword" required />
+          <input type="password" id="confirmPassword" required minlength="8" maxlength="64"/>
 
           <label>Security Question</label>
-          <select required>
+          <select id="securityQuestion" required>
             <option value="">Select a security question...</option>
             <option>What was your first pet's name?</option>
             <option>What is your mother's maiden name?</option>
@@ -81,7 +85,7 @@
           </select>
 
           <label>Security Question Answer</label>
-          <input type="text" required />
+          <input type="text" id="securityAnswer" required />
 
           <div class="checkbox">
             <label class="checkbox-label">
@@ -90,7 +94,7 @@
             </label>
           </div>
 
-          <button type="submit">Sign Up</button>
+          <button type="submit" id="signupButton" disabled>Sign Up</button>
         </form>
       </div>
     </div>

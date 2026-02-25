@@ -126,7 +126,47 @@ button {
   margin: 20px auto 0;
   cursor: pointer;
 }
-
+.form-box input,
+.form-box select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #666;
+  box-sizing: border-box; /* prevents overflow */
+  font-size: 14px;
+}
+.checkbox-label input {
+  width: auto;
+  margin: 0;
+}
 button:hover {
   background-color: #1027a3;
+}
+input.error,
+select.error {
+  border: 2px solid #cc0000;
+  background-color: #ffe6e6;
+}
+
+/* Tooltip for password field */
+.password-tooltip {
+  display: none;
+  background: #fffbe6;
+  border: 1px solid #d6c58a;
+  color: #222;
+  padding: 8px 10px;
+  font-size: 13px;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  margin-top: -8px;
+  margin-bottom: 12px;
+}
+.password-tooltip.visible {
+  display: block;
+}
+
+button:disabled {
+  background-color: #999;
+  cursor: not-allowed;
 }
