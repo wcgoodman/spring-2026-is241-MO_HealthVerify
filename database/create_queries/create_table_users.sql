@@ -1,17 +1,21 @@
 /*
-	Create script for users table, for use in Registration story
+ * Create script for users table, for use in Registration story
+ * Updated 2026.02.24 with best practices
  */
 
-CREATE TABLE users (
-    user_id SERIAL PRIMARY KEY,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
-    salt VARCHAR(32) NOT NULL,
-    first_name VARCHAR(50) NOT NULL,
-    last_name VARCHAR(50) NOT NULL,
-    password_last_updated TIMESTAMP WITH TIME ZONE,
-    datetime_registered TIMESTAMP WITH TIME ZONE NOT NULL,
-    last_login TIMESTAMP WITH TIME ZONE,
-    security_question VARCHAR(255) NOT NULL,
-    security_answer_hash VARCHAR(255) NOT NULL
+--Uncomment below line if need to drop users table before creation
+--DROP TABLE IF EXISTS users;
+
+CREATE TABLE IF NOT EXISTS users (
+    user_id int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    email TEXT UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    salt TEXT NOT NULL,
+    first_name TEXT NOT NULL,
+    last_name TEXT NOT NULL,
+    password_last_updated TIMESTAMPTZ,
+    datetime_registered TIMESTAMPTZ NOT NULL,
+    last_login TIMESTAMPTZ,
+    security_question TEXT NOT NULL,
+    security_answer_hash TEXT NOT NULL
 );
