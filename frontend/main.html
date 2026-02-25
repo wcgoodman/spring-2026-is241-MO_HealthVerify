@@ -8,6 +8,22 @@
     <script src="scripts/user-registration-form-validations.js"></script>
 </head>
 
+<<<<<<< HEAD
+    <!-- External CSS -->
+    <link rel="stylesheet" href="style/mainStyles.css" />
+    <style>
+      .error-message { color: red; font-weight: 700; }
+    </style>
+  </head>
+
+  <body>
+    <!-- Header -->
+    <div class="top-header">
+      <!-- Logo Source: -->
+      <div class="logo"><img src="img/missouriDSSLogo.png" alt="Image courtesy of Missouri Department of Social Services."></div>
+
+      <div class="top-links">
+=======
 <body>
 <!-- Header -->
 <div class="top-header">
@@ -15,6 +31,7 @@
     <div class="logo"><img alt="Logo of Missouri Department of Social Services" src="img/missouriDSSLogo.png"></div>
 
     <div class="top-links">
+>>>>>>> main
         <a class="top-link" href="https://dss.mo.gov">DSS</a>
         <a class="top-link" href="https://mo.gov">mo.gov</a>
         <a class="top-link" href="#">Governor Kehoe</a>
@@ -42,21 +59,70 @@
 
     <div class="form-box">
         <form id="signupForm">
+<<<<<<< HEAD
+          <label>First Name</label>
+          <input type="text" id="firstName" required />
+
+          <label>Last Name</label>
+          <input type="text" id="lastName" required />
+=======
             <label for="firstName">First Name</label>
             <input id="firstName" required type="text"/>
 
             <label for="lastName">Last Name</label>
             <input id="lastName" required type="text"/>
+>>>>>>> main
 
             <label for="email">Email Address</label>
             <input id="email" required type="text"/>
             <div class="error-message" id="emailError"></div>
 
+<<<<<<< HEAD
+          <label
+            >Password
+            <span class="show-link" onclick="togglePassword('password')"
+              >Show Password</span
+            >
+          </label>
+          <input type="password" id="password" required minlength="8" maxlength="64"/>
+          <div id="passwordTooltip" class="password-tooltip" role="tooltip" aria-hidden="true">
+            Passwords must be between 8 and 64 characters long.<br>
+            Regex for validating this rule is /^.{8,64}$/
+          </div>
+
+          <label
+            >Confirm Password
+            <span class="show-link" onclick="togglePassword('confirmPassword')"
+              >Show Password</span
+            >
+          </label>
+          <input type="password" id="confirmPassword" required minlength="8" maxlength="64"/>
+
+          <label>Security Question</label>
+          <select id="securityQuestion" required>
+            <option value="">Select a security question...</option>
+            <option>What was your first pet's name?</option>
+            <option>What is your mother's maiden name?</option>
+            <option>What city were you born in?</option>
+          </select>
+
+          <label>Security Question Answer</label>
+          <input type="text" id="securityAnswer" required />
+
+          <div class="checkbox">
+            <label class="checkbox-label">
+              <input type="checkbox" id="terms" required />
+              I agree to the <a href="#">terms and conditions</a>
+=======
             <label for="password">Password
                 <span class="show-link" onclick="togglePassword('password')">Show Password</span>
+>>>>>>> main
             </label>
             <input id="password" required type="password"/>
 
+<<<<<<< HEAD
+          <button type="submit" id="signupButton" disabled>Sign Up</button>
+=======
             <label for="confirmPassword">Confirm Password
                 <span class="show-link" onclick="togglePassword('confirmPassword')">Show Password</span>
             </label>
@@ -81,6 +147,7 @@
             </div>
 
             <button type="submit">Sign Up</button>
+>>>>>>> main
         </form>
     </div>
 </div>
