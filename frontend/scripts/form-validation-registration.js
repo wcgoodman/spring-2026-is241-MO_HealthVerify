@@ -25,7 +25,8 @@ function togglePassword(fieldId) {
 
     function setError(el, show) {
         if (!el) return;
-        if (show) el.classList.add('error'); else el.classList.remove('error');
+        if (show) el.classList.add('error');
+        else el.classList.remove('error');
     }
 
     function validateField(id) {
@@ -62,7 +63,8 @@ function togglePassword(fieldId) {
 
         // Only show visual error if field has been touched at least once
         let showVisual = !!touched[id];
-        if (id === 'email') setError(el, showVisual && !valid); else if (id === 'terms') {
+        if (id === 'email') setError(el, showVisual && !valid);
+        else if (id === 'terms') {
             // checkbox uses parent label highlighting
             let cb = document.getElementById('terms');
             if (cb) cb.classList.toggle('error', showVisual && !valid);
@@ -148,7 +150,9 @@ function togglePassword(fieldId) {
         };
 
         fetch('/api/register', {// makes an HTTP request to your backend endpoint
-            method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload)
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(payload)
         })
             .then(function (resp) {
                 if (!resp.ok) throw new Error('Network response was not ok');

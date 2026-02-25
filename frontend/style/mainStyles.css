@@ -207,11 +207,6 @@ select.error {
     background-color: #ffe6e6;
 }
 
-.error-message {
-    color: red;
-    font-weight: 700;
-}
-
 /* Tooltip for password field */
 .password-tooltip {
     display: none;
