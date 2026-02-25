@@ -1,7 +1,11 @@
 package com.example.MoHealthVerifyApp.repository;
+
 import com.example.MoHealthVerifyApp.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface UserRepository extends JpaRepository <User, Long>{
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+
     boolean existsByEmail(String email);
 }
