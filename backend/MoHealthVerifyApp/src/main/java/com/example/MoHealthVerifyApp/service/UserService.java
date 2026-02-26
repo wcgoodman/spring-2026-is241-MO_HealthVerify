@@ -24,7 +24,7 @@ public class UserService {
 
         // Check if email already exists
         if (repo.existsByEmail(req.getEmail())) {
-            throw new RuntimeException("Email already exists");
+            throw new IllegalStateException("Email already exists");
         }
 
         User user = new User();

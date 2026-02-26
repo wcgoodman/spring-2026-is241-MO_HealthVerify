@@ -155,7 +155,7 @@ function togglePassword(fieldId) {
             body: JSON.stringify(payload)
         })
             .then(function (resp) {
-                if (!resp.ok) throw new Error('Network response was not ok');
+                if (!resp.ok) throw new Error();
                 return resp.json();
             }) // parse JSON response
             .then(function (data) { // handle response from backend
