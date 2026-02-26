@@ -138,8 +138,7 @@ body {
     margin-top: 0;
 }
 
-input,
-select {
+input, select {
     width: 100%;
     padding: 6px;
     margin-top: 4px;
@@ -228,4 +227,30 @@ select.error {
 button:disabled {
     background-color: #999;
     cursor: not-allowed;
+}
+
+.link-table {
+    margin: auto;
+
+    .link-cell {
+        max-width: 25%;
+
+        a {
+            text-decoration: none;
+            width: fit-content;
+
+            :link {
+                color: #eeeeee;
+            }
+
+            :hover {
+                text-decoration: underline;
+            }
+        }
+
+        img {
+            max-height: 180px;
+            max-width: 180px;
+        }
+    }
 }
