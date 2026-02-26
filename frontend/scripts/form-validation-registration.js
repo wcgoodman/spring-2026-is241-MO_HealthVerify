@@ -149,7 +149,7 @@ function togglePassword(fieldId) {
             securityAnswer: securityAnswer.value.trim()
         };
 
-        fetch('http://localhost:8080/api/register', {// makes an HTTP request to your backend endpoint
+        fetch('http://localhost:8080/api/auth/register', {// makes an HTTP request to your backend endpoint
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(payload)
