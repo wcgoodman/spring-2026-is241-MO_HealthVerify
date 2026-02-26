@@ -1,6 +1,12 @@
+/*
+    Spring 2026 IS 241.210 - Team MO HealthVerify
+    Written by Sumbal Shehzadi, with some assistance from Justin Whipple
+ */
+
 package com.example.MoHealthVerifyApp.entity;
 
 import jakarta.persistence.*;
+
 import java.time.OffsetDateTime;
 
 @Entity
@@ -44,36 +50,91 @@ public class User {
 
     // Getters & Setters
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getFirstName() { return firstName; }
-    public void setFirstName(String firstName) { this.firstName = firstName; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getLastName() { return lastName; }
-    public void setLastName(String lastName) { this.lastName = lastName; }
+    public String getFirstName() {
+        return firstName;
+    }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-    public String getPasswordHash() { return passwordHash; }
-    public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }
+    public String getLastName() {
+        return lastName;
+    }
 
-    public String getSalt() { return salt; }
-    public void setSalt(String salt) { this.salt = salt; }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-    public String getSecurityQuestion() { return securityQuestion; }
-    public void setSecurityQuestion(String securityQuestion) { this.securityQuestion = securityQuestion; }
+    public String getEmail() {
+        return email;
+    }
 
-    public String getSecurityAnswerHash() { return securityAnswerHash; }
-    public void setSecurityAnswerHash(String securityAnswerHash) { this.securityAnswerHash = securityAnswerHash; }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-    public OffsetDateTime getDatetimeRegistered() { return datetimeRegistered; }
-    public void setDatetimeRegistered(OffsetDateTime datetimeRegistered) { this.datetimeRegistered = datetimeRegistered; }
+    public String getPasswordHash() {
+        return passwordHash;
+    }
 
-    public OffsetDateTime getLastLogin() { return lastLogin; }
-    public void setLastLogin(OffsetDateTime lastLogin) { this.lastLogin = lastLogin; }
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
 
-    public OffsetDateTime getPasswordLastUpdated() { return passwordLastUpdated; }
-    public void setPasswordLastUpdated(OffsetDateTime passwordLastUpdated) { this.passwordLastUpdated = passwordLastUpdated; }
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    public String getSecurityQuestion() {
+        return securityQuestion;
+    }
+
+    public void setSecurityQuestion(String securityQuestion) {
+        this.securityQuestion = securityQuestion;
+    }
+
+    public String getSecurityAnswerHash() {
+        return securityAnswerHash;
+    }
+
+    public void setSecurityAnswerHash(String securityAnswerHash) {
+        this.securityAnswerHash = securityAnswerHash;
+    }
+
+    public OffsetDateTime getDatetimeRegistered() {
+        return datetimeRegistered;
+    }
+
+    public void setDatetimeRegistered(OffsetDateTime datetimeRegistered) {
+        this.datetimeRegistered = datetimeRegistered;
+    }
+
+    public OffsetDateTime getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(OffsetDateTime lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+
+    public OffsetDateTime getPasswordLastUpdated() {
+        return passwordLastUpdated;
+    }
+
+    public void setPasswordLastUpdated(OffsetDateTime passwordLastUpdated) {
+        this.passwordLastUpdated = passwordLastUpdated;
+    }
 }

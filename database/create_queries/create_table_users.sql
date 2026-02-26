@@ -1,6 +1,6 @@
 /*
- * Create script for users table, for use in Registration story
- * Updated 2026.02.24 with best practices
+    Spring 2026 IS 241.210 - Team MO HealthVerify
+    Written by William Goodman, with design input from Robert Kamkwalala
  */
 
 --Uncomment below line if need to drop users table before creation

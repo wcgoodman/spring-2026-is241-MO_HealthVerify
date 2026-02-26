@@ -1,3 +1,8 @@
+/*
+    Spring 2026 IS 241.210 - Team MO HealthVerify
+    Written by Davis Ly, with some tweaks from William Goodman
+ */
+
 function togglePassword(fieldId) {
     let field = document.getElementById(fieldId);
     field.type = field.type === "password" ? "text" : "password";

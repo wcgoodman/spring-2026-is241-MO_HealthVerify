@@ -1,11 +1,17 @@
+/*
+    Spring 2026 IS 241.210 - Team MO HealthVerify
+    Written by Sumbal Shehzadi, with some assistance from Justin Whipple
+ */
+
 package com.example.MoHealthVerifyApp.controller;
 
 import com.example.MoHealthVerifyApp.dto.RegisterRequest;
 import com.example.MoHealthVerifyApp.service.UserService;
-import org.springframework.web.bind.annotation.*;
-import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")

@@ -1,14 +1,19 @@
-	package com.example.MoHealthVerifyApp;
+/*
+    Spring 2026 IS 241.210 - Team MO HealthVerify
+    Written by Sumbal Shehzadi, with some assistance from Justin Whipple
+ */
 
-	import org.springframework.boot.SpringApplication;
-	import org.springframework.boot.autoconfigure.SpringBootApplication;
+package com.example.MoHealthVerifyApp;
 
-	@SpringBootApplication
-	public class MoHealthVerifyAppApplication {
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-		public static void main(String[] args) {
+@SpringBootApplication
+public class MoHealthVerifyAppApplication {
 
-			SpringApplication.run(MoHealthVerifyAppApplication.class, args);
-		}
+    public static void main(String[] args) {
 
-	}
+        SpringApplication.run(MoHealthVerifyAppApplication.class, args);
+    }
+
+}

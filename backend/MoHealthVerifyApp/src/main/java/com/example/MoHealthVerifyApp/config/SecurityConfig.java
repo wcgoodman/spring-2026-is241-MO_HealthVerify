@@ -1,3 +1,8 @@
+/*
+    Spring 2026 IS 241.210 - Team MO HealthVerify
+    Written by Sumbal Shehzadi, with some assistance from Justin Whipple
+ */
+
 package com.example.MoHealthVerifyApp.config;
 
 import org.springframework.context.annotation.Bean;
@@ -30,7 +35,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/register", "/api/auth/login").permitAll() // open endpoints
                         .anyRequest().authenticated() // all others require auth
                 )
-                .httpBasic(httpBasic -> {});
+                .httpBasic(httpBasic -> {
+                });
 
         return http.build();
     }
