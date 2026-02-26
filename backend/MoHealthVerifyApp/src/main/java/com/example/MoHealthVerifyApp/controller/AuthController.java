@@ -2,7 +2,10 @@ package com.example.MoHealthVerifyApp.controller;
 
 import com.example.MoHealthVerifyApp.dto.RegisterRequest;
 import com.example.MoHealthVerifyApp.service.UserService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -16,8 +19,13 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String register(@RequestBody RegisterRequest req) {
-        service.register(req);
-        return "User registered successfully";
+    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+        service.register(request);
+        return ResponseEntity.ok(
+                Map.of(
+                        "success", true,
+                        "message", "Account registration successful!"
+                )
+        );
     }
 }
