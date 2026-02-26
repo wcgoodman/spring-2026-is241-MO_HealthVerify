@@ -154,21 +154,24 @@ function togglePassword(fieldId) {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(payload)
         })
-            .then(function (resp) {
-                if (!resp.ok) throw new Error();
-                return resp.json();
-            }) // parse JSON response
-            .then(function (data) { // handle response from backend
+            .then(response => {
+                if (!response.ok) {
+                    // If not ok, return the body promise (e.g., as JSON) to the next .then or .catch
+                    return response.json().then(errorData => {
+                        throw new Error(errorData.message || 'Unknown error occurred');
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
                 if (data && data.success) {
                     alert('Account registration successful!');
                     window.location.href = 'index.html'; // Redirect to login page after successful registration
-                } else { // show error message from backend if available
-                    let msg = (data && data.message) ? data.message : 'Registration failed.';
-                    alert(msg);
                 }
             })
-            .catch(function (err) {
-                alert('Registration failed: ' + err.message);
+            .catch(error => {
+                // This catches network errors or the error thrown above
+                alert('Error occurred: ' + error.message);
             });
     });
 
