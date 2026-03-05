@@ -171,7 +171,7 @@ function togglePassword(fieldId) {
             .then(data => {
                 if (data && data.success) {
                     alert('Account registration successful!');
-                    window.location.href = 'index.html'; // Redirect to login page after successful registration
+                    window.location.href = 'login.html'; // Redirect to login page after successful registration
                 }
             })
             .catch(error => {

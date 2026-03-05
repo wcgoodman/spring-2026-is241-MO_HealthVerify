@@ -14,7 +14,11 @@
     <style>
         .error-message {
             color: red;
+            font-size: 13px;
             font-weight: 700;
+            min-height: 16px;
+            margin-top: -8px;
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -47,6 +51,7 @@
 
 <!-- Main Section -->
 <div class="container">
+    <h1 style="color: red">WARNING: ONLY Missourians are allowed</h1>
     <h2>Sign up</h2>
     <p>
         To set up a new account we'll need you to enter the following details
@@ -76,8 +81,7 @@
 
             <label for="confirmPassword">Confirm Password
                 <span class="show-link" onclick="togglePassword('confirmPassword')"
-                >Show Password</span
-                >
+                >Show Password</span>
             </label>
             <input id="confirmPassword" maxlength="64" minlength="8" required type="password"/>
 
@@ -100,6 +104,9 @@
             </div>
 
             <button disabled id="signupButton" type="submit">Sign Up</button>
+            <p style="margin-top: 12px; text-align: center;">
+                Already have an account? <a href="login.html">Log in</a>
+            </p>
         </form>
     </div>
 </div>
