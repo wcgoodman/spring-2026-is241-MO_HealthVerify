@@ -5,6 +5,7 @@
 
 function togglePassword(fieldId) {
     let field = document.getElementById(fieldId);
+    if (!field) return;
     field.type = field.type === "password" ? "text" : "password";
 }
 
@@ -14,8 +15,10 @@ function togglePassword(fieldId) {
     let password = document.getElementById("password");
     let usernameError = document.getElementById("usernameError");
     let passwordError = document.getElementById("passwordError");
+    let authMessage = document.getElementById("authMessage");
     let signInButton = document.getElementById("signInButton");
     let touched = {};
+    let isSubmitting = false;
 
     if (!form || !username || !password || !signInButton) return;
 
@@ -56,7 +59,15 @@ function togglePassword(fieldId) {
     }
 
     function updateSubmitState() {
-        signInButton.disabled = !validateAll();
+        signInButton.disabled = isSubmitting || !validateAll();
+    }
+
+    function clearAuthMessage() {
+        if (authMessage) authMessage.textContent = "";
+    }
+
+    function setAuthMessage(message) {
+        if (authMessage) authMessage.textContent = message;
     }
 
     ["username", "password"].forEach(function (id) {
@@ -66,11 +77,13 @@ function togglePassword(fieldId) {
         el.addEventListener("focus", function () {
             touched[id] = true;
             validateField(id);
+            clearAuthMessage();
             updateSubmitState();
         });
 
         el.addEventListener("input", function () {
             validateField(id);
+            clearAuthMessage();
             updateSubmitState();
         });
 
@@ -80,12 +93,79 @@ function togglePassword(fieldId) {
         });
     });
 
-    // No login request yet; only block invalid form submission.
     form.addEventListener("submit", function (e) {
         e.preventDefault();
         touched.username = true;
         touched.password = true;
+        clearAuthMessage();
+
+        if (!validateAll()) {
+            updateSubmitState();
+            if (!validateField("username")) username.focus();
+            else if (!validateField("password")) password.focus();
+            return;
+        }
+
+        isSubmitting = true;
+        signInButton.textContent = "Signing In...";
         updateSubmitState();
+
+        let payload = {
+            email: username.value.trim(),
+            password: password.value
+        };
+
+
+
+
+
+        // Temporary dev override credential.
+        if (payload.email === "dly5@my.stlcc.edu" && payload.password === "testing1") {
+            isSubmitting = false;
+            signInButton.textContent = "Sign In";
+            updateSubmitState();
+            window.location.href = "home.html";
+            return;
+        }
+
+
+
+
+        fetch("http://localhost:8080/api/auth/login", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(payload)
+        })
+            .then(function (response) {
+                return response.text().then(function (text) {
+                    let data = {};
+                    if (text) {
+                        try {
+                            data = JSON.parse(text);
+                        } catch (err) {
+                            data = {};
+                        }
+                    }
+                    return {ok: response.ok, data: data};
+                });
+            })
+            .then(function (result) {
+                let isSuccess = result.ok && result.data && result.data.success === true;
+                if (!isSuccess) {
+                    setAuthMessage((result.data && result.data.message) || "Sign in failed. Please check your username and password.");
+                    return;
+                }
+
+                window.location.href = "home.html";
+            })
+            .catch(function() {
+                setAuthMessage("Unable to reach login service. Please try again.");
+            })
+            .finally(function () {
+                isSubmitting = false;
+                signInButton.textContent = "Sign In";
+                updateSubmitState();
+            });
     });
 
     updateSubmitState();
