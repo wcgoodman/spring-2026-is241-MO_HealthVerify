@@ -241,6 +241,7 @@ button:disabled {
 
     .link-cell {
         max-width: 25%;
+        padding: 24px;
 
         a {
             text-decoration: none;
