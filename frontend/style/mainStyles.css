@@ -236,6 +236,63 @@ button:disabled {
     cursor: not-allowed;
 }
 
+.magnifier-toggle {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 2000;
+    width: auto;
+    min-width: 110px;
+    margin: 0;
+    padding: 10px 12px;
+    border: 1px solid #1a33cc;
+    border-radius: 999px;
+    background-color: #ffffff;
+    color: #1a33cc;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
+}
+
+.magnifier-toggle:hover {
+    background-color: #eaf0ff;
+}
+
+.magnifier-toggle.active {
+    background-color: #1a33cc;
+    color: #ffffff;
+}
+
+.magnifier-lens {
+    position: fixed;
+    z-index: 2100;
+    border-radius: 50%;
+    border: 2px solid #1a33cc;
+    background: #ffffff;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    pointer-events: none;
+    display: none;
+}
+
+.magnifier-lens.visible {
+    display: block;
+}
+
+.magnifier-content {
+    width: max-content;
+    height: max-content;
+}
+
+.magnifier-text-preview {
+    min-width: 1px;
+}
+
+body.magnifier-mode {
+    cursor: zoom-in;
+}
+
 .link-table {
     margin: auto;
 
