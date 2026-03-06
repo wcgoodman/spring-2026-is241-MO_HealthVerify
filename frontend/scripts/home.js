@@ -42,6 +42,7 @@
 
     logoutButton.addEventListener("click", function () {
         clearRelatedLocalData();
-        window.location.href = "login.html";
+        window.alert("Logout successful.");
+        window.location.href = "index.html";
     });
 })();
