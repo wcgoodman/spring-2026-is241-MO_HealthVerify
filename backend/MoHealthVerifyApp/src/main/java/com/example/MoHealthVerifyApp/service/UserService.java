@@ -51,4 +51,14 @@ public class UserService {
 
         repo.save(user);
     }
+    public boolean login(String email, String password) {
+
+        User user = repo.findByEmail(email);
+
+        if (user == null) {
+            return false;
+        }
+
+        return passwordEncoder.matches(password, user.getPasswordHash());
+    }
 }

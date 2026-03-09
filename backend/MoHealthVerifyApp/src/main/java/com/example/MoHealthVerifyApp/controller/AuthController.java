@@ -43,5 +43,27 @@ public class AuthController {
                             )
                     );
         }
+        @PostMapping("/login")
+        public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+
+            boolean success = service.login(request.getEmail(), request.getPassword());
+
+            if (success) {
+                return ResponseEntity.ok(
+                        Map.of(
+                                "success", true,
+                                "message", "Login successful"
+                        )
+                );
+            }
+
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(
+                            Map.of(
+                                    "success", false,
+                                    "message", "Invalid email or password"
+                            )
+                    );
+        }
     }
 }
