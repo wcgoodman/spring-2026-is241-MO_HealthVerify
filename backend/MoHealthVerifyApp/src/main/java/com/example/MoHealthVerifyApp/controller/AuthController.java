@@ -5,6 +5,7 @@
 
 package com.example.MoHealthVerifyApp.controller;
 
+import com.example.MoHealthVerifyApp.dto.LoginRequest;
 import com.example.MoHealthVerifyApp.dto.RegisterRequest;
 import com.example.MoHealthVerifyApp.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -28,42 +29,22 @@ public class AuthController {
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
         try {
             service.register(request);
-            return ResponseEntity.ok(
-                    Map.of(
-                            "success", true,
-                            "message", "Account registration successful!"
-                    )
-            );
+            return ResponseEntity.ok(Map.of("success", true, "message", "Account registration successful!"));
         } catch (IllegalStateException ex) {
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body(
-                            Map.of(
-                                    "success", false,
-                                    "message", ex.getMessage()
-                            )
-                    );
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("success", false, "message", ex.getMessage()));
         }
-        @PostMapping("/login")
-        public ResponseEntity<?> login(@RequestBody LoginRequest request) {
 
-            boolean success = service.login(request.getEmail(), request.getPassword());
+    }
 
-            if (success) {
-                return ResponseEntity.ok(
-                        Map.of(
-                                "success", true,
-                                "message", "Login successful"
-                        )
-                );
-            }
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
 
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(
-                            Map.of(
-                                    "success", false,
-                                    "message", "Invalid email or password"
-                            )
-                    );
+        boolean success = service.login(request.getEmail(), request.getPassword());
+
+        if (success) {
+            return ResponseEntity.ok(Map.of("success", true, "message", "Login successful"));
         }
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("success", false, "message", "Invalid email or password"));
     }
 }
