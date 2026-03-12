@@ -1,4 +1,4 @@
-package com.mohealthverify.model;
+package com.mohealthverify.entity;
 
 import jakarta.persistence.*;
 

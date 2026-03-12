@@ -17,10 +17,12 @@ public class AuthController {
 
     // Register endpoint
     @PostMapping("/register")
-    public String register(@RequestParam String email,
+    public String register(@RequestParam String firstName,
+                           @RequestParam String lastName,
+                           @RequestParam String email,
                            @RequestParam String password) {
         try {
-            userService.register(email, password);
+            userService.register(firstName, lastName, email, password);
             return "Registration successful";
         } catch (RuntimeException e) {
             return e.getMessage();

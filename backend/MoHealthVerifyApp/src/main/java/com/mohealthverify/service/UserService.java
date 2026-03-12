@@ -1,7 +1,7 @@
 package com.mohealthverify.service;
 
-import com.mohealthverify.model.User;
-import com.mohealthverify.model.Password;
+import com.mohealthverify.entity.User;
+import com.mohealthverify.entity.Password;
 import com.mohealthverify.repository.UserRepository;
 import com.mohealthverify.repository.PasswordRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,16 +22,16 @@ public class UserService {
         this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
-    // Register a new user
-    public void register(String email, String password) {
+    public void register(String firstName, String lastName, String email, String password) {
 
-        // Check if email already exists
         if (userRepository.findByEmail(email) != null) {
             throw new RuntimeException("Email already exists");
         }
 
         // Create User
         User user = new User();
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
         user.setEmail(email);
         user.setDatetimeRegistered(OffsetDateTime.now());
         user.setLastLogin(null);
@@ -47,7 +47,6 @@ public class UserService {
         passwordRepository.save(pw);
     }
 
-    // Login
     public boolean login(String email, String password) {
         User user = userRepository.findByEmail(email);
         if (user == null) return false;
@@ -57,5 +56,4 @@ public class UserService {
 
         return passwordEncoder.matches(password, pw.getPasswordHash());
     }
-
 }
