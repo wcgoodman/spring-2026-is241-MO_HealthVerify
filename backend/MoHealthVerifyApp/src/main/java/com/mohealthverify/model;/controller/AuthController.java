@@ -29,7 +29,7 @@ public class AuthController {
         }
 
         try {
-            userService.register(request.getEmail().trim(), request.getPassword());
+            userService.register(request.getFirstName(), request.getLastName(), request.getEmail().trim(), request.getPassword());
             return ResponseEntity.ok(Map.of(
                     "success", true,
                     "message", "Registration successful."

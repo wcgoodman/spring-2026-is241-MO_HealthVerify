@@ -25,15 +25,16 @@ public class UserService {
 
     // Register a new user
     @Transactional
-    public void register(String email, String password) {
+    public void register(String firstName, String lastName, String email, String password) {
 
-        // Check if email already exists
         if (userRepository.findByEmail(email) != null) {
             throw new RuntimeException("Email already exists");
         }
 
         // Create User
         User user = new User();
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
         user.setEmail(email);
         user.setDatetimeRegistered(OffsetDateTime.now());
         user.setLastLogin(null);
