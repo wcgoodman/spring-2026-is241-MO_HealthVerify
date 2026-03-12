@@ -1,4 +1,4 @@
-package com.example.MoHealthVerifyApp.dto;
+package com.mohealthverify.dto;
 
 public class LoginRequest {
 

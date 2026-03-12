@@ -1,38 +1,71 @@
 package com.mohealthverify.controller;
 
+import com.mohealthverify.dto.LoginRequest;
+import com.mohealthverify.dto.RegisterRequest;
 import com.mohealthverify.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 
     private final UserService userService;
 
-    @Autowired
     public AuthController(UserService userService) {
         this.userService = userService;
     }
 
-    // Register endpoint
     @PostMapping("/register")
-    public String register(@RequestParam String email,
-                           @RequestParam String password) {
+    public ResponseEntity<Map<String, Object>> register(@RequestBody RegisterRequest request) {
+        if (request == null || isBlank(request.getEmail()) || isBlank(request.getPassword())) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "success", false,
+                    "message", "Email and password are required."
+            ));
+        }
+
         try {
-            userService.register(email, password);
-            return "Registration successful";
-        } catch (RuntimeException e) {
-            return e.getMessage();
+            userService.register(request.getEmail().trim(), request.getPassword());
+            return ResponseEntity.ok(Map.of(
+                    "success", true,
+                    "message", "Registration successful."
+            ));
+        } catch (RuntimeException ex) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of(
+                    "success", false,
+                    "message", ex.getMessage()
+            ));
         }
     }
 
-    // Login endpoint
     @PostMapping("/login")
-    public String login(@RequestParam String email,
-                        @RequestParam String password) {
-        boolean success = userService.login(email, password);
-        return success ? "Login successful" : "Invalid credentials";
+    public ResponseEntity<Map<String, Object>> login(@RequestBody LoginRequest request) {
+        if (request == null || isBlank(request.getEmail()) || isBlank(request.getPassword())) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "success", false,
+                    "message", "Email and password are required."
+            ));
+        }
+
+        boolean success = userService.login(request.getEmail().trim(), request.getPassword());
+        if (!success) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
+                    "success", false,
+                    "message", "Invalid credentials."
+            ));
+        }
+
+        return ResponseEntity.ok(Map.of(
+                "success", true,
+                "message", "Login successful."
+        ));
     }
 
+    private static boolean isBlank(String value) {
+        return value == null || value.trim().isEmpty();
+    }
 }

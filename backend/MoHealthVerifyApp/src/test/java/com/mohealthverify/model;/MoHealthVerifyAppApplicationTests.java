@@ -1,4 +1,4 @@
-package com.example.MoHealthVerifyApp;
+package com.mohealthverify;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
