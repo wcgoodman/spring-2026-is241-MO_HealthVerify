@@ -106,6 +106,9 @@ function togglePassword(fieldId) {
             updateSubmitState();
         });
         el.addEventListener('input', function () {
+            if (id === 'email') {
+                el.value = el.value.toLowerCase();
+            }
             validateField(id);
             updateSubmitState();
         });
@@ -148,7 +151,7 @@ function togglePassword(fieldId) {
         let payload = {
             firstName: firstName.value.trim(),
             lastName: lastName.value.trim(),
-            email: email.value.trim(),
+            email: email.value.trim().toLowerCase(),
             password: password.value,
             securityQuestion: securityQuestion.value,
             securityAnswer: securityAnswer.value.trim()
