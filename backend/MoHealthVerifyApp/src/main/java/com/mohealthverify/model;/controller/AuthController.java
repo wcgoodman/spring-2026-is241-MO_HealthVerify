@@ -17,12 +17,14 @@ public class AuthController {
 
     // Register endpoint
     @PostMapping("/register")
-    public String register(@RequestParam String firstName,
-                           @RequestParam String lastName,
-                           @RequestParam String email,
-                           @RequestParam String password) {
+    public String register(@RequestBody com.mohealthverify.dto.RegisterRequest request) {
         try {
-            userService.register(firstName, lastName, email, password);
+            userService.register(
+                    request.getFirstName(),
+                    request.getLastName(),
+                    request.getEmail(),
+                    request.getPassword()
+            );
             return "Registration successful";
         } catch (RuntimeException e) {
             return e.getMessage();
