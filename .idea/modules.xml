@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/backend/MoHealthVerifyApp/MoHealthVerifyApp.iml" filepath="$PROJECT_DIR$/backend/MoHealthVerifyApp/MoHealthVerifyApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/spring-2026-is241-MO_HealthVerify.iml" filepath="$PROJECT_DIR$/.idea/spring-2026-is241-MO_HealthVerify.iml" />
     </modules>
   </component>
