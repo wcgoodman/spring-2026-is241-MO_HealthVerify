@@ -1,7 +1,7 @@
 package com.mohealthverify.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import com.mohealthverify.entity.Password;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PasswordRepository extends JpaRepository<Password, Long> {
 

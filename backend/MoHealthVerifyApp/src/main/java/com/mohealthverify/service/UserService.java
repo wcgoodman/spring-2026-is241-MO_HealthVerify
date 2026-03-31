@@ -1,7 +1,7 @@
 package com.mohealthverify.service;
 
-import com.mohealthverify.entity.User;
 import com.mohealthverify.entity.Password;
+import com.mohealthverify.entity.User;
 import com.mohealthverify.repository.UserRepository;
 import com.mohealthverify.repository.PasswordRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
