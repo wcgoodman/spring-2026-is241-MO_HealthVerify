@@ -1,0 +1,47 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+table users {
+  user_id integer [primary key, unique, not null, increment]
+  email text [not null, unique]
+  first_name text [not null]
+  last_name text [not null]
+  datetime_registered timestamptz [not null]
+  last_login timestamptz
+}
+
+table passwords {
+  password_id integer [primary key, unique, not null, increment]
+  user_id integer [not null, ref: - users.user_id]
+  salt text [not null]
+  password_hash text [not null]
+  password_last_updated timestamptz // not set until password changed
+}
+
+table sessions {
+  session_id integer [primary key, unique, not null, increment]
+  user_id integer [not null, ref: - users.user_id]
+  login_time timestamptz [not null]
+  logout_time timestamptz
+}
+
+table lkp_security_questions {
+  security_question_id integer [primary key, unique, not null, increment]
+  security_question_text text [not null]
+}
+
+table user_security_qs_as {
+  user_security_qa_id integer [primary key, unique, not null, increment]
+  user_id integer [not null, ref: - users.user_id]
+  security_question_id integer [not null, ref: > lkp_security_questions.security_question_id]
+  answer_hash text [not null]
+}
+
+table user_uploads {
+  upload_id integer [primary key, unique, not null, increment]
+  user_id integer [not null, ref: > users.user_id]
+  upload_descriptive_name text [not null]
+  upload_file_name text [not null]
+  upload_base64 text [not null]
+  uploaded_at timestamptz [not null]
+}
