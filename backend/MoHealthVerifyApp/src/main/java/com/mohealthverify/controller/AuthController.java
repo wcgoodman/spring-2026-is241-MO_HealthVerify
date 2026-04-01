@@ -53,21 +53,22 @@ public class AuthController {
 
     // Upload endpoint
     @PostMapping("/upload")
-    public ResponseEntity<String> upload(@RequestBody UploadRequest request) {
+    public ResponseEntity<?> upload(@RequestBody UploadRequest request) {
         try {
             uploadService.handleUpload(request);
-            return ResponseEntity.ok("Upload successful");
+            return ResponseEntity.ok(Map.of("success", true, "message", "Upload successful"));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Upload failed");
+            return ResponseEntity.badRequest().body(Map.of("success", false, "message", "Upload failed"));
         }
     }
 
-    @GetMapping("/uploads/{email}")
-    public ResponseEntity<?> getUploads(@PathVariable String email) {
+    @GetMapping("/uploads/{userId}")
+    public ResponseEntity<?> getUploads(@PathVariable Long userId) {
         try {
-            return ResponseEntity.ok(uploadService.getUploadsByUser(email));
+            var uploads = uploadService.getUploadsByUser(userId);
+            return ResponseEntity.ok(Map.of("success", true, "uploads", uploads));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Failed to fetch uploads");
+            return ResponseEntity.badRequest().body(Map.of("success", false, "message", "Failed to fetch uploads"));
         }
     }
 }

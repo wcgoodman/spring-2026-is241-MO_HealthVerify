@@ -6,6 +6,7 @@ import com.mohealthverify.repository.UploadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.OffsetDateTime;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Base64;
@@ -21,11 +22,26 @@ public class UploadService {
         this.uploadRepository = uploadRepository;
     }
 
-    public List<Upload> getUploadsByUser(String userEmail) {
-        return uploadRepository.findByUserEmail(userEmail);
+    // Get uploads by user
+    public List<Upload> getUploadsByUser(Long userId) {
+        return uploadRepository.findByUserId(userId);
     }
 
+    // Handle upload
     public void handleUpload(UploadRequest request) throws Exception {
+
+        // Basic validation
+        if (request.getFile_data() == null || request.getFile_data().isEmpty()) {
+            throw new Exception("File data is empty");
+        }
+
+        if (request.getUser_id() == null) {
+            throw new Exception("User ID is required");
+        }
+
+        if (request.getFile_name() == null || request.getFile_name().isEmpty()) {
+            throw new Exception("File name is required");
+        }
 
         // Create uploads folder if it doesn't exist
         File folder = new File("uploads/");
@@ -36,24 +52,28 @@ public class UploadService {
         // Decode Base64 file
         byte[] fileBytes = Base64.getDecoder().decode(request.getFile_data());
 
-        // Create file path
-        String filePath = "uploads/" + request.getFile_name();
+        // Clean file name (can use spaces)
+        String cleanName = request.getFile_name().replaceAll(" ", "_");
 
-        // Save file locally
+        // Prevent overwrite
+        String fileName = System.currentTimeMillis() + "_" + cleanName;
+        String filePath = "uploads/" + fileName;
+
         try (FileOutputStream fos = new FileOutputStream(filePath)) {
             fos.write(fileBytes);
         }
 
         // Save metadata to PostgreSQL
         Upload upload = new Upload();
-        upload.setUserEmail(request.getUser_email());
-        upload.setDescriptiveName(request.getDescriptive_name());
-        upload.setFileName(request.getFile_name());
-        upload.setFilePath(filePath);
+        upload.setUserId(request.getUser_id());
+        upload.setUploadDescriptiveName(request.getDescriptive_name());
+        upload.setUploadFileName(fileName);
+        upload.setUploadFilePath(filePath);
+        upload.setUploadedAt(OffsetDateTime.now());
 
         uploadRepository.save(upload);
 
-        // Optional log
-        System.out.println("Upload saved for user: " + request.getUser_email());
+        // Log
+        System.out.println("Upload saved: " + fileName + " for user " + request.getUser_id());
     }
 }

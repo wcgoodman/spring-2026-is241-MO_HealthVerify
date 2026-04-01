@@ -1,30 +1,40 @@
 package com.mohealthverify.entity;
 
 import jakarta.persistence.*;
+import java.time.OffsetDateTime;
 
 @Entity
+@Table(name = "uploads")
 public class Upload {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long uploadId;
 
-    private String userEmail;
-    private String descriptiveName;
-    private String fileName;
-    private String filePath;
+    private Long userId;
 
-    public Long getId() { return id; }
+    private String uploadDescriptiveName;
+    private String uploadFileName;
+    private String uploadFilePath;
 
-    public String getUserEmail() { return userEmail; }
-    public void setUserEmail(String userEmail) { this.userEmail = userEmail; }
+    private OffsetDateTime uploadedAt;
 
-    public String getDescriptiveName() { return descriptiveName; }
-    public void setDescriptiveName(String descriptiveName) { this.descriptiveName = descriptiveName; }
+    // Getters & Setters
 
-    public String getFileName() { return fileName; }
-    public void setFileName(String fileName) { this.fileName = fileName; }
+    public Long getUploadId() { return uploadId; }
 
-    public String getFilePath() { return filePath; }
-    public void setFilePath(String filePath) { this.filePath = filePath; }
+    public Long getUserId() { return userId; }
+    public void setUserId(Long userId) { this.userId = userId; }
+
+    public String getUploadDescriptiveName() { return uploadDescriptiveName; }
+    public void setUploadDescriptiveName(String uploadDescriptiveName) { this.uploadDescriptiveName = uploadDescriptiveName; }
+
+    public String getUploadFileName() { return uploadFileName; }
+    public void setUploadFileName(String uploadFileName) { this.uploadFileName = uploadFileName; }
+
+    public String getUploadFilePath() { return uploadFilePath; }
+    public void setUploadFilePath(String uploadFilePath) { this.uploadFilePath = uploadFilePath; }
+
+    public OffsetDateTime getUploadedAt() { return uploadedAt; }
+    public void setUploadedAt(OffsetDateTime uploadedAt) { this.uploadedAt = uploadedAt; }
 }
