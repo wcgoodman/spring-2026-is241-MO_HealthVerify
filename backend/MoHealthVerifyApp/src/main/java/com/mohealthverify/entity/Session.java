@@ -15,6 +15,9 @@ public class Session {
     @Column(name = "user_id")
     private Long userId;
 
+    @Column(name = "jsessionid")
+    private String jsessionid;
+
     @Column(name = "login_time")
     private OffsetDateTime loginTime;
 

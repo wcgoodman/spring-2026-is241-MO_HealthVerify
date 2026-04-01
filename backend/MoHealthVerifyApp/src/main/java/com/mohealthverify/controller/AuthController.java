@@ -6,6 +6,7 @@ import com.mohealthverify.dto.UploadRequest;
 import com.mohealthverify.service.UserService;
 import com.mohealthverify.service.UploadService;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,23 +43,33 @@ public class AuthController {
 
     // Login endpoint
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest request, HttpSession session) {
         boolean success = userService.login(request.getEmail(), request.getPassword());
         if (success) {
+            // Store user info in session
+            session.setAttribute("userEmail", request.getEmail());
+
             return ResponseEntity.ok(Map.of("success", true, "message", "Login successful"));
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(Map.of("success", false, "message", "Invalid email or password"));
     }
 
-    // Upload endpoint
     @PostMapping("/upload")
     public ResponseEntity<?> upload(@RequestBody UploadRequest request) {
         try {
+            System.out.println(request.getUser_id());
             uploadService.handleUpload(request);
-            return ResponseEntity.ok(Map.of("success", true, "message", "Upload successful"));
+            return ResponseEntity.ok(Map.of(
+                    "success", true,
+                    "message", "Upload successful"
+            ));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(Map.of("success", false, "message", "Upload failed"));
+            e.printStackTrace(); // <-- print full error to console
+            return ResponseEntity.badRequest().body(Map.of(
+                    "success", false,
+                    "message", "Upload failed: " + e.getMessage()
+            ));
         }
     }
 
