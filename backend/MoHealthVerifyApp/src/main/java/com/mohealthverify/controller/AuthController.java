@@ -6,12 +6,11 @@ import com.mohealthverify.dto.UploadRequest;
 import com.mohealthverify.service.UserService;
 import com.mohealthverify.service.UploadService;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Map;
 
@@ -28,47 +27,76 @@ public class AuthController {
         this.uploadService = uploadService;
     }
 
-    // Register endpoint
+    // REGISTER
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
         try {
-            userService.register(request.getFirstName(), request.getLastName(), request.getEmail(), request.getPassword());
-            return ResponseEntity.ok(Map.of("success", true, "message", "Registration successful."));
+            userService.register(
+                    request.getFirstName(),
+                    request.getLastName(),
+                    request.getEmail(),
+                    request.getPassword()
+            );
+            return ResponseEntity.ok(Map.of("success", true, "message", "Registration successful"));
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(Map.of("success", false, "message", e.getMessage()));
         }
     }
 
-    // Login endpoint
+    // LOGIN
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-        boolean success = userService.login(request.getEmail(), request.getPassword());
-        if (success) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest request, HttpSession session) {
+
+        Long userId = userService.loginAndReturnUserId(request.getEmail(), request.getPassword());
+
+        if (userId != null) {
+            session.setAttribute("userId", userId);
+            session.setAttribute("userEmail", request.getEmail());
+
             return ResponseEntity.ok(Map.of("success", true, "message", "Login successful"));
         }
+
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(Map.of("success", false, "message", "Invalid email or password"));
     }
 
-    // Upload endpoint
+    // UPLOAD — uses logged-in session userId
     @PostMapping("/upload")
-    public ResponseEntity<?> upload(@RequestBody UploadRequest request) {
+    public ResponseEntity<?> upload(@RequestBody UploadRequest request, HttpSession session) {
         try {
+            Long userId = (Long) session.getAttribute("userId");
+            if (userId == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(Map.of("success", false, "message", "User not logged in"));
+            }
+
+            request.setUser_id(userId);
             uploadService.handleUpload(request);
+
             return ResponseEntity.ok(Map.of("success", true, "message", "Upload successful"));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(Map.of("success", false, "message", "Upload failed"));
+            e.printStackTrace();
+            return ResponseEntity.badRequest()
+                    .body(Map.of("success", false, "message", "Upload failed: " + e.getMessage()));
         }
     }
 
-    @GetMapping("/uploads/{userId}")
-    public ResponseEntity<?> getUploads(@PathVariable Long userId) {
+    // GET UPLOADS
+    @GetMapping("/uploads")
+    public ResponseEntity<?> getUploads(HttpSession session) {
         try {
+            Long userId = (Long) session.getAttribute("userId");
+            if (userId == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(Map.of("success", false, "message", "User not logged in"));
+            }
+
             var uploads = uploadService.getUploadsByUser(userId);
             return ResponseEntity.ok(Map.of("success", true, "uploads", uploads));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(Map.of("success", false, "message", "Failed to fetch uploads"));
+            return ResponseEntity.badRequest()
+                    .body(Map.of("success", false, "message", "Failed to fetch uploads"));
         }
     }
 }

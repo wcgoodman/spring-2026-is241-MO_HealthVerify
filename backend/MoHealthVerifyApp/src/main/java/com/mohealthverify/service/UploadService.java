@@ -30,32 +30,23 @@ public class UploadService {
     // Handle upload
     public void handleUpload(UploadRequest request) throws Exception {
 
-        // Basic validation
         if (request.getFile_data() == null || request.getFile_data().isEmpty()) {
             throw new Exception("File data is empty");
         }
-
         if (request.getUser_id() == null) {
             throw new Exception("User ID is required");
         }
-
         if (request.getFile_name() == null || request.getFile_name().isEmpty()) {
             throw new Exception("File name is required");
         }
 
-        // Create uploads folder if it doesn't exist
         File folder = new File("uploads/");
         if (!folder.exists()) {
             folder.mkdirs();
         }
 
-        // Decode Base64 file
         byte[] fileBytes = Base64.getDecoder().decode(request.getFile_data());
-
-        // Clean file name (can use spaces)
         String cleanName = request.getFile_name().replaceAll(" ", "_");
-
-        // Prevent overwrite
         String fileName = System.currentTimeMillis() + "_" + cleanName;
         String filePath = "uploads/" + fileName;
 
@@ -63,7 +54,6 @@ public class UploadService {
             fos.write(fileBytes);
         }
 
-        // Save metadata to PostgreSQL
         Upload upload = new Upload();
         upload.setUserId(request.getUser_id());
         upload.setUploadDescriptiveName(request.getDescriptive_name());
@@ -73,7 +63,6 @@ public class UploadService {
 
         uploadRepository.save(upload);
 
-        // Log
         System.out.println("Upload saved: " + fileName + " for user " + request.getUser_id());
     }
 }

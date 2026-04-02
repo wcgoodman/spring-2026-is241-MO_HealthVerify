@@ -1,9 +1,11 @@
 package com.mohealthverify.service;
 
-import com.mohealthverify.entity.Password;
 import com.mohealthverify.entity.User;
+import com.mohealthverify.entity.Password;
 import com.mohealthverify.repository.UserRepository;
 import com.mohealthverify.repository.PasswordRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -12,48 +14,51 @@ import java.time.OffsetDateTime;
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
-    private final PasswordRepository passwordRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private UserRepository userRepository;
 
-    public UserService(UserRepository userRepository, PasswordRepository passwordRepository) {
-        this.userRepository = userRepository;
-        this.passwordRepository = passwordRepository;
-        this.passwordEncoder = new BCryptPasswordEncoder();
-    }
+    @Autowired
+    private PasswordRepository passwordRepository;
 
-    public void register(String firstName, String lastName, String email, String password) {
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    // REGISTER
+    public void register(String firstName, String lastName, String email, String rawPassword) {
 
         if (userRepository.findByEmail(email) != null) {
-            throw new RuntimeException("Email already exists");
+            throw new RuntimeException("Email already registered");
         }
 
-        // Create User
         User user = new User();
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setEmail(email);
         user.setDatetimeRegistered(OffsetDateTime.now());
         user.setLastLogin(null);
-
         userRepository.save(user);
 
-        // Create Password entry
         Password pw = new Password();
         pw.setUserId(user.getId());
-        pw.setPasswordHash(passwordEncoder.encode(password));
-        pw.setSalt("BCrypt"); // optional placeholder
+        pw.setPasswordHash(passwordEncoder.encode(rawPassword));
+        pw.setSalt("BCrypt");
         pw.setPasswordLastUpdated(OffsetDateTime.now());
         passwordRepository.save(pw);
+
     }
 
-    public boolean login(String email, String password) {
+    // LOGIN — returns userId if successful
+    public Long loginAndReturnUserId(String email, String rawPassword) {
+
         User user = userRepository.findByEmail(email);
-        if (user == null) return false;
+        if (user == null) return null;
 
         Password pw = passwordRepository.findByUserId(user.getId());
-        if (pw == null) return false;
+        if (pw == null) return null;
 
-        return passwordEncoder.matches(password, pw.getPasswordHash());
+        if (passwordEncoder.matches(rawPassword, pw.getPasswordHash())) {
+            return user.getId();
+        }
+
+        return null;
     }
 }
