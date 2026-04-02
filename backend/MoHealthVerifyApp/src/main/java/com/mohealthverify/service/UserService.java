@@ -23,7 +23,7 @@ public class UserService {
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     // REGISTER
-    public User register(String firstName, String lastName, String email, String rawPassword) {
+    public void register(String firstName, String lastName, String email, String rawPassword) {
 
         if (userRepository.findByEmail(email) != null) {
             throw new RuntimeException("Email already registered");
@@ -33,6 +33,8 @@ public class UserService {
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setEmail(email);
+        user.setDatetimeRegistered(OffsetDateTime.now());
+        user.setLastLogin(null);
         userRepository.save(user);
 
         Password pw = new Password();
@@ -42,7 +44,6 @@ public class UserService {
         pw.setPasswordLastUpdated(OffsetDateTime.now());
         passwordRepository.save(pw);
 
-        return user;
     }
 
     // LOGIN — returns userId if successful
