@@ -61,4 +61,26 @@ public class UserService {
 
         return null;
     }
+
+    // GET USER BY ID
+    public User getUserById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
+    // UPDATE PROFILE
+    public User updateProfile(Long id, String firstName, String lastName, String email) {
+
+        User user = userRepository.findById(id).orElse(null);
+
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+
+        // update fields
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
+
+        return userRepository.save(user);
+    }
 }
