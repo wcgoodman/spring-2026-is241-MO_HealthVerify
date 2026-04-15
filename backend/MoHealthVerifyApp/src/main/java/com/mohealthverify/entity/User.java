@@ -18,6 +18,9 @@ public class User {
     @Column(name = "first_name")   // <-- added
     private String firstName;
 
+    @Column(name = "middle_initial")
+    private String middleInitial;
+
     @Column(name = "last_name")    // <-- added
     private String lastName;
 
@@ -36,6 +39,9 @@ public class User {
 
     public String getFirstName() { return firstName; }   // <-- added
     public void setFirstName(String firstName) { this.firstName = firstName; }  // <-- added
+
+    public String getMiddleInitial() { return middleInitial; }
+    public void setMiddleInitial(String middleInitial) { this.middleInitial = middleInitial; }
 
     public String getLastName() { return lastName; }     // <-- added
     public void setLastName(String lastName) { this.lastName = lastName; }      // <-- added
