@@ -1,9 +1,9 @@
-DROP TABLE IF EXISTS user_uploads;
-DROP TABLE IF EXISTS user_security_qs_as;
-DROP TABLE IF EXISTS lkp_security_questions;
-DROP TABLE IF EXISTS passwords;
-DROP TABLE IF EXISTS applicant_profile;
-DROP TABLE IF EXISTS users;
+--DROP TABLE IF EXISTS user_uploads;
+--DROP TABLE IF EXISTS user_security_qs_as;
+--DROP TABLE IF EXISTS lkp_security_questions;
+--DROP TABLE IF EXISTS passwords;
+--DROP TABLE IF EXISTS applicant_profile;
+--DROP TABLE IF EXISTS users;
 
 
 CREATE TABLE "users" (
