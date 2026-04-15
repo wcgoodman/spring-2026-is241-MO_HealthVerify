@@ -42,7 +42,7 @@ Table "uploads" {
 }
 
 Table "applicant_profiles" {
-  "applicant_profile_id" SERIAL [pk, not null, increment]
+  "applicant_profile_id" INTEGER [unique, pk, not null, increment]
   "user_id" integer [not null]
   "profile_last_updated" timestamptz
   "is_missouri_resident" bool
