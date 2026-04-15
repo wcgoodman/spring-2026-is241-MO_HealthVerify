@@ -1,12 +1,12 @@
 package com.mohealthverify.controller;
 
 import com.mohealthverify.dto.LoginRequest;
-import com.mohealthverify.dto.ProfileResponse;
 import com.mohealthverify.dto.RegisterRequest;
 import com.mohealthverify.dto.UploadRequest;
 import com.mohealthverify.service.UserService;
 import com.mohealthverify.service.UploadService;
 import com.mohealthverify.dto.ProfileUpdateRequest;
+import com.mohealthverify.entity.User;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,13 +112,14 @@ public class AuthController {
                     .body(Map.of("success", false, "message", "Not logged in"));
         }
 
-        try {
-            ProfileResponse profile = userService.getProfile(userId);
-            return ResponseEntity.ok(profile);
-        } catch (RuntimeException e) {
+        User user = userService.getUserById(userId);
+
+        if (user == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(Map.of("success", false, "message", e.getMessage()));
+                    .body(Map.of("success", false, "message", "User not found"));
         }
+
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping("/profile/update")
@@ -134,12 +135,17 @@ public class AuthController {
         }
 
         try {
-            ProfileResponse updatedProfile = userService.updateProfile(userId, request);
+            User updatedUser = userService.updateProfile(
+                    userId,
+                    request.getFirstName(),
+                    request.getLastName(),
+                    request.getEmail()
+            );
 
             return ResponseEntity.ok(Map.of(
                     "success", true,
                     "message", "Profile updated successfully",
-                    "profile", updatedProfile
+                    "user", updatedUser
             ));
 
         } catch (RuntimeException e) {
