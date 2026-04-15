@@ -1,9 +1,9 @@
---DROP TABLE IF EXISTS user_uploads;
---DROP TABLE IF EXISTS user_security_qs_as;
---DROP TABLE IF EXISTS lkp_security_questions;
---DROP TABLE IF EXISTS passwords;
---DROP TABLE IF EXISTS applicant_profile;
---DROP TABLE IF EXISTS users;
+-- DROP TABLE IF EXISTS uploads;
+-- DROP TABLE IF EXISTS user_security_qs_as;
+-- DROP TABLE IF EXISTS lkp_security_questions;
+-- DROP TABLE IF EXISTS passwords;
+-- DROP TABLE IF EXISTS applicant_profiles;
+-- DROP TABLE IF EXISTS users;
 
 
 CREATE TABLE "users" (
@@ -45,10 +45,10 @@ CREATE TABLE "uploads" (
   "uploaded_at" timestamptz NOT NULL
 );
 
-CREATE TABLE "applicant_profile" (
+CREATE TABLE "applicant_profiles" (
   "applicant_profile_id" SERIAL PRIMARY KEY NOT NULL,
   "user_id" integer NOT NULL,
-  "profile_last_updated" datetimetz,
+  "profile_last_updated" timestamptz,
   "is_missouri_resident" bool,
   "date_of_birth" date,
   "address_1" text,
@@ -66,4 +66,4 @@ ALTER TABLE "user_security_qs_as" ADD FOREIGN KEY ("security_question_id") REFER
 
 ALTER TABLE "uploads" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("user_id") DEFERRABLE INITIALLY IMMEDIATE;
 
-ALTER TABLE "applicant_profile" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("user_id") DEFERRABLE INITIALLY IMMEDIATE;
+ALTER TABLE "applicant_profiles" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("user_id") DEFERRABLE INITIALLY IMMEDIATE;
