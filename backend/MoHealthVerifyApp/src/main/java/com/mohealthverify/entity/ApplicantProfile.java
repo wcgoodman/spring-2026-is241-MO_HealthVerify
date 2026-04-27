@@ -40,8 +40,6 @@ public class ApplicantProfile {
     @Column(name = "address_zip_code")
     private String addressZipCode;
 
-    // GETTERS & SETTERS
-
     public Long getApplicantProfileId() { return applicantProfileId; }
     public void setApplicantProfileId(Long applicantProfileId) { this.applicantProfileId = applicantProfileId; }
 
