@@ -1,47 +1,78 @@
-// Use DBML to define your database structure
-// Docs: https://dbml.dbdiagram.io/docs
-
-table users {
-  user_id integer [primary key, unique, not null, increment]
-  email text [not null, unique]
-  first_name text [not null]
-  last_name text [not null]
-  datetime_registered timestamptz [not null]
-  last_login timestamptz
+Table "users" {
+  "user_id" INTEGER [unique, pk, not null, increment]
+  "email" text [unique, not null]
+  "first_name" text [not null]
+  "middle_initial" char
+  "last_name" text [not null]
+  "datetime_registered" timestamptz [not null]
+  "last_login" timestamptz
 }
 
-table passwords {
-  password_id integer [primary key, unique, not null, increment]
-  user_id integer [not null, ref: - users.user_id]
-  salt text [not null]
-  password_hash text [not null]
-  password_last_updated timestamptz // not set until password changed
+Table "passwords" {
+  "password_id" INTEGER [unique, pk, not null, increment]
+  "user_id" integer [not null]
+  "salt" text [not null]
+  "password_hash" text [not null]
+  "password_last_updated" timestamptz
 }
 
-table sessions {
-  session_id integer [primary key, unique, not null, increment]
-  user_id integer [not null, ref: - users.user_id]
-  login_time timestamptz [not null]
-  logout_time timestamptz
+Table "lkp_security_questions" {
+  "security_question_id" INTEGER [unique, pk, not null, increment]
+  "security_question_text" text [not null]
 }
 
-table lkp_security_questions {
-  security_question_id integer [primary key, unique, not null, increment]
-  security_question_text text [not null]
+Table "user_security_qs_as" {
+  "user_security_qa_id" INTEGER [unique, pk, not null, increment]
+  "user_id" integer [not null]
+  "security_question_id" integer [not null]
+  "answer_hash" text [not null]
 }
 
-table user_security_qs_as {
-  user_security_qa_id integer [primary key, unique, not null, increment]
-  user_id integer [not null, ref: - users.user_id]
-  security_question_id integer [not null, ref: > lkp_security_questions.security_question_id]
-  answer_hash text [not null]
+Table "uploads" {
+  "upload_id" INTEGER [unique, pk, not null, increment]
+  "user_id" integer [not null]
+  "upload_descriptive_name" text [not null]
+  "upload_file_name" text [not null]
+  "upload_file_path" text [not null]
+  "uploaded_at" timestamptz [not null]
 }
 
-table user_uploads {
-  upload_id integer [primary key, unique, not null, increment]
-  user_id integer [not null, ref: > users.user_id]
-  upload_descriptive_name text [not null]
-  upload_file_name text [not null]
-  upload_base64 text [not null]
-  uploaded_at timestamptz [not null]
+Table "applicant_profiles" {
+  "applicant_profile_id" INTEGER [unique, pk, not null, increment]
+  "user_id" integer [not null]
+  "profile_last_updated" timestamptz
+  "is_missouri_resident" bool
+  "date_of_birth" date
+  "address_1" text
+  "address_2" text
+  "address_city" text
+  "address_state" text
+  "address_zipcode" text
 }
+
+Table "applicant_time_records" {
+  "applicant_time_record_id" INTEGER [unique, pk, not null, increment]
+  "user_id" integer [not null]
+  "time_record_type_id" integer [not null]
+  "time_record_starting_datetime" timestamptz [not null]
+  "time_record_ending_datetime" timestamptz [not null]
+}
+
+Table "lkp_time_record_types" {
+  "time_record_type_id" INTEGER [unique, pk, not null, increment]
+  "time_record_type" string [not null]
+}
+
+Ref:"users"."user_id" < "applicant_time_records"."user_id"
+
+Ref:"lkp_time_record_types"."time_record_type_id" < "applicant_time_records"."time_record_type_id"
+
+Ref:"users"."user_id" < "passwords"."user_id"
+
+Ref:"users"."user_id" < "user_security_qs_as"."user_id"
+
+Ref:"lkp_security_questions"."security_question_id" < "user_security_qs_as"."security_question_id"
+
+Ref:"users"."user_id" < "uploads"."user_id"
+
+Ref:"users"."user_id" < "applicant_profiles"."user_id"
