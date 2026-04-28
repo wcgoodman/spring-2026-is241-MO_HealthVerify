@@ -1,7 +1,3 @@
-// Use DBML to define your database structure
-// Docs: https://dbml.dbdiagram.io/docs
-
-
 Table "users" {
   "user_id" INTEGER [unique, pk, not null, increment]
   "email" text [unique, not null]
@@ -42,7 +38,7 @@ Table "uploads" {
 }
 
 Table "applicant_profiles" {
-  "applicant_profile_id" SERIAL [pk, not null, increment]
+  "applicant_profile_id" INTEGER [unique, pk, not null, increment]
   "user_id" integer [not null]
   "profile_last_updated" timestamptz
   "is_missouri_resident" bool
@@ -53,6 +49,23 @@ Table "applicant_profiles" {
   "address_state" text
   "address_zipcode" text
 }
+
+Table "applicant_time_records" {
+  "applicant_time_record_id" INTEGER [unique, pk, not null, increment]
+  "user_id" integer [not null]
+  "time_record_type_id" integer [not null]
+  "time_record_starting_datetime" timestamptz [not null]
+  "time_record_ending_datetime" timestamptz [not null]
+}
+
+Table "lkp_time_record_types" {
+  "time_record_type_id" INTEGER [unique, pk, not null, increment]
+  "time_record_type" text [not null]
+}
+
+Ref:"users"."user_id" < "applicant_time_records"."user_id"
+
+Ref:"lkp_time_record_types"."time_record_type_id" < "applicant_time_records"."time_record_type_id"
 
 Ref:"users"."user_id" < "passwords"."user_id"
 
