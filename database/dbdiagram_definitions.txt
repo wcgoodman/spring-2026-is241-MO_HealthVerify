@@ -60,7 +60,7 @@ Table "applicant_time_records" {
 
 Table "lkp_time_record_types" {
   "time_record_type_id" INTEGER [unique, pk, not null, increment]
-  "time_record_type" string [not null]
+  "time_record_type" text [not null]
 }
 
 Ref:"users"."user_id" < "applicant_time_records"."user_id"
