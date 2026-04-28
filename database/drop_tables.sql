@@ -1,0 +1,8 @@
+DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS passwords CASCADE;
+DROP TABLE IF EXISTS applicant_profiles CASCADE;
+DROP TABLE IF EXISTS user_security_qs_as CASCADE;
+DROP TABLE IF EXISTS lkp_security_questions CASCADE;
+DROP TABLE IF EXISTS uploads CASCADE;
+DROP TABLE IF EXISTS applicant_time_records CASCADE;
+DROP TABLE IF EXISTS lkp_time_record_types CASCADE;
