@@ -19,6 +19,10 @@ public class TimeTrackingService {
         return repository.save(record);
     }
 
+    public List<ApplicantTimeRecord> saveRecords(List<ApplicantTimeRecord> records) {
+        return repository.saveAll(records);
+    }
+
     public List<ApplicantTimeRecord> getUserHistory(Long userId) {
         return repository.findByUserIdOrderByTimeRecordStartingDatetimeDesc(userId);
     }

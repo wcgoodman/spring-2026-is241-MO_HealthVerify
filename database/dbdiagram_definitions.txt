@@ -30,6 +30,11 @@ table lkp_security_questions {
   security_question_text text [not null]
 }
 
+table lkp_time_record_types {
+  time_record_type_id integer [primary key, unique, not null, increment]
+  time_record_type text [not null]
+}
+
 table user_security_qs_as {
   user_security_qa_id integer [primary key, unique, not null, increment]
   user_id integer [not null, ref: - users.user_id]

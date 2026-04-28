@@ -8,17 +8,17 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/profile")
-public class ProfileController {
+public class ProfileController2 {
 
     private final ProfileService profileService;
 
-    public ProfileController(ProfileService profileService) {
+    public ProfileController2(ProfileService profileService) {
         this.profileService = profileService;
     }
 
     @PostMapping("/{userId}")
     public ResponseEntity<?> updateProfile(
-            @PathVariable Long userId,
+            @PathVariable("userId") Long userId,
             @RequestBody ProfileUpdateRequest request) {
 
         ApplicantProfile profile = profileService.updateProfile(userId, request);
