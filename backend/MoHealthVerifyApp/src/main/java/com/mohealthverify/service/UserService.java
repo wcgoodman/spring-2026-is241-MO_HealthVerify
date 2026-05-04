@@ -76,19 +76,7 @@ public class UserService {
             throw new RuntimeException("User not found");
         }
 
-        String firstName = normalizeText(request.getFirstName());
-        String lastName = normalizeText(request.getLastName());
-        String email = normalizeText(request.getEmail());
-
-        if (firstName == null || lastName == null || email == null) {
-            throw new RuntimeException("First name, last name, and email are required");
-        }
-
-        User existingByEmail = userRepository.findByEmail(email);
-        if (existingByEmail != null && !existingByEmail.getId().equals(id)) {
-            throw new RuntimeException("Email already in use");
-        }
-
+        // update fields
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setEmail(email);
