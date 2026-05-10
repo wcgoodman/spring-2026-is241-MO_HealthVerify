@@ -3,14 +3,15 @@ package com.mohealthverify.controller;
 import com.mohealthverify.dto.LoginRequest;
 import com.mohealthverify.dto.RegisterRequest;
 import com.mohealthverify.dto.UploadRequest;
-import com.mohealthverify.service.UserService;
-import com.mohealthverify.service.UploadService;
 import com.mohealthverify.dto.ProfileUpdateRequest;
+
 import com.mohealthverify.entity.User;
 
+import com.mohealthverify.service.UserService;
+import com.mohealthverify.service.UploadService;
+
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,134 +24,160 @@ public class AuthController {
     private final UserService userService;
     private final UploadService uploadService;
 
-    @Autowired
     public AuthController(UserService userService, UploadService uploadService) {
         this.userService = userService;
         this.uploadService = uploadService;
     }
 
-    // REGISTER
+    // REGISTER APPLICANT
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
-        try {
-            userService.register(
-                    request.getFirstName(),
-                    request.getLastName(),
-                    request.getEmail(),
-                    request.getPassword()
-            );
-            return ResponseEntity.ok(Map.of("success", true, "message", "Registration successful"));
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body(Map.of("success", false, "message", e.getMessage()));
-        }
+
+        userService.register(
+                request.getFirstName(),
+                request.getLastName(),
+                request.getEmail(),
+                request.getPassword()
+        );
+
+        return ResponseEntity.ok(Map.of(
+                "success", true,
+                "message", "Applicant registered successfully"
+        ));
     }
 
-    // LOGIN
+    // LOGIN APPLICANT
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request, HttpSession session) {
+    public ResponseEntity<?> login(
+            @RequestBody LoginRequest request,
+            HttpSession session
+    ) {
 
-        Long userId = userService.loginAndReturnUserId(request.getEmail(), request.getPassword());
+        Long applicantId = userService.loginAndReturnUserId(
+                request.getEmail(),
+                request.getPassword()
+        );
 
-        if (userId != null) {
-            session.setAttribute("userId", userId);
-            session.setAttribute("userEmail", request.getEmail());
-
-            return ResponseEntity.ok(Map.of("success", true, "message", "Login successful"));
+        if (applicantId == null) {
+            return ResponseEntity.status(401).body(Map.of(
+                    "success", false,
+                    "message", "Invalid email or password"
+            ));
         }
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(Map.of("success", false, "message", "Invalid email or password"));
+        session.setAttribute("applicantId", applicantId);
+
+        return ResponseEntity.ok(Map.of(
+                "success", true,
+                "message", "Login successful",
+                "applicantId", applicantId
+        ));
     }
 
-    // UPLOAD — uses logged-in session userId
-    @PostMapping("/upload")
-    public ResponseEntity<?> upload(@RequestBody UploadRequest request, HttpSession session) {
-        try {
-            Long userId = (Long) session.getAttribute("userId");
-            if (userId == null) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                        .body(Map.of("success", false, "message", "User not logged in"));
-            }
-
-            request.setUser_id(userId);
-            uploadService.handleUpload(request);
-
-            return ResponseEntity.ok(Map.of("success", true, "message", "Upload successful"));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest()
-                    .body(Map.of("success", false, "message", "Upload failed: " + e.getMessage()));
-        }
-    }
-
-    // GET UPLOADS
-    @GetMapping("/uploads")
-    public ResponseEntity<?> getUploads(HttpSession session) {
-        try {
-            Long userId = (Long) session.getAttribute("userId");
-            if (userId == null) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                        .body(Map.of("success", false, "message", "User not logged in"));
-            }
-
-            var uploads = uploadService.getUploadsByUser(userId);
-            return ResponseEntity.ok(Map.of("success", true, "uploads", uploads));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest()
-                    .body(Map.of("success", false, "message", "Failed to fetch uploads"));
-        }
-    }
-
+    // GET CURRENT APPLICANT PROFILE
     @GetMapping("/profile")
     public ResponseEntity<?> getProfile(HttpSession session) {
 
-        Long userId = (Long) session.getAttribute("userId");
+        Long applicantId = (Long) session.getAttribute("applicantId");
 
-        if (userId == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("success", false, "message", "Not logged in"));
+        if (applicantId == null) {
+            return ResponseEntity.status(401).body(Map.of(
+                    "success", false,
+                    "message", "Applicant not logged in"
+            ));
         }
 
-        User user = userService.getUserById(userId);
+        User applicant = userService.getUserById(applicantId);
 
-        if (user == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(Map.of("success", false, "message", "User not found"));
-        }
-
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(Map.of(
+                "success", true,
+                "applicant", applicant
+        ));
     }
 
+    // UPDATE CURRENT APPLICANT PROFILE
     @PostMapping("/profile/update")
     public ResponseEntity<?> updateProfile(
             @RequestBody ProfileUpdateRequest request,
-            HttpSession session) {
+            HttpSession session
+    ) {
 
-        Long userId = (Long) session.getAttribute("userId");
+        Long applicantId = (Long) session.getAttribute("applicantId");
 
-        if (userId == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("success", false, "message", "Not logged in"));
-        }
-
-        try {
-            User updatedUser = userService.updateProfile(
-                    userId,
-                    request.getFirstName(),
-                    request.getLastName(),
-                    request.getEmail()
-            );
-
-            return ResponseEntity.ok(Map.of(
-                    "success", true,
-                    "message", "Profile updated successfully",
-                    "user", updatedUser
+        if (applicantId == null) {
+            return ResponseEntity.status(401).body(Map.of(
+                    "success", false,
+                    "message", "Applicant not logged in"
             ));
-
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of("success", false, "message", e.getMessage()));
         }
+
+        User updated = userService.updateProfile(
+                applicantId,
+                request.getFirstName(),
+                request.getLastName(),
+                request.getEmail()
+        );
+
+        return ResponseEntity.ok(Map.of(
+                "success", true,
+                "message", "Profile updated successfully",
+                "applicant", updated
+        ));
+    }
+
+    // UPLOAD APPLICANT DOCUMENT
+    @PostMapping("/upload")
+    public ResponseEntity<?> upload(
+            @RequestBody UploadRequest request,
+            HttpSession session
+    ) {
+
+        Long applicantId = (Long) session.getAttribute("applicantId");
+
+        if (applicantId == null) {
+            return ResponseEntity.status(401).body(Map.of(
+                    "success", false,
+                    "message", "Applicant not logged in"
+            ));
+        }
+
+        request.setApplicant_id(applicantId);
+        uploadService.handleUpload(request);
+
+        return ResponseEntity.ok(Map.of(
+                "success", true,
+                "message", "Document uploaded successfully"
+        ));
+    }
+
+    // RETURN APPLICANT UPLOADED DOCUMENTS
+    @GetMapping("/uploads")
+    public ResponseEntity<?> getUploads(HttpSession session) {
+
+        Long applicantId = (Long) session.getAttribute("applicantId");
+
+        if (applicantId == null) {
+            return ResponseEntity.status(401).body(Map.of(
+                    "success", false,
+                    "message", "Applicant not logged in"
+            ));
+        }
+
+        return ResponseEntity.ok(Map.of(
+                "success", true,
+                "uploads", uploadService.getUploadsByApplicant(applicantId)
+        ));
+    }
+
+    // LOGOUT
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpSession session) {
+
+        session.invalidate();
+
+        return ResponseEntity.ok(Map.of(
+                "success", true,
+                "message", "Logged out successfully"
+        ));
     }
 }

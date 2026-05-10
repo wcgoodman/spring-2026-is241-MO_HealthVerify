@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface ApplicantTimeRecordRepository extends JpaRepository<ApplicantTimeRecord, Long> {
 
-    List<ApplicantTimeRecord> findByUserIdOrderByTimeRecordStartingDatetimeDesc(Long userId);
+    List<ApplicantTimeRecord> findByapplicantIdOrderByTimeRecordStartingDatetimeDesc(Long applicantId);
 }

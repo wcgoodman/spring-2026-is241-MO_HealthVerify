@@ -16,12 +16,12 @@ public class ProfileController2 {
         this.profileService = profileService;
     }
 
-    @PostMapping("/{userId}")
+    @PostMapping("/{applicantId}")
     public ResponseEntity<?> updateProfile(
-            @PathVariable("userId") Long userId,
+            @PathVariable("applicantId") Long applicantId,
             @RequestBody ProfileUpdateRequest request) {
 
-        ApplicantProfile profile = profileService.updateProfile(userId, request);
+        ApplicantProfile profile = profileService.updateProfile(applicantId, request);
         return ResponseEntity.ok(profile);
     }
 }

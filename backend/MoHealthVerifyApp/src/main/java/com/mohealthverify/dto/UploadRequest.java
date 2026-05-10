@@ -1,20 +1,41 @@
 package com.mohealthverify.dto;
 
 public class UploadRequest {
+
+    private Long applicant_id;
     private String descriptive_name;
     private String file_name;
     private String file_data;
-    private Long user_id;
 
-    public String getDescriptive_name() { return descriptive_name; }
-    public void setDescriptive_name(String descriptive_name) { this.descriptive_name = descriptive_name; }
+    public Long getApplicant_id() {
+        return applicant_id;
+    }
 
-    public String getFile_name() { return file_name; }
-    public void setFile_name(String file_name) { this.file_name = file_name; }
+    public void setApplicant_id(Long applicant_id) {
+        this.applicant_id = applicant_id;
+    }
 
-    public String getFile_data() { return file_data; }
-    public void setFile_data(String file_data) { this.file_data = file_data; }
+    public String getDescriptive_name() {
+        return descriptive_name;
+    }
 
-    public Long getUser_id() { return user_id; }
-    public void setUser_id(Long user_id) { this.user_id = user_id; }
+    public void setDescriptive_name(String descriptive_name) {
+        this.descriptive_name = descriptive_name;
+    }
+
+    public String getFile_name() {
+        return file_name;
+    }
+
+    public void setFile_name(String file_name) {
+        this.file_name = file_name;
+    }
+
+    public String getFile_data() {
+        return file_data;
+    }
+
+    public void setFile_data(String file_data) {
+        this.file_data = file_data;
+    }
 }

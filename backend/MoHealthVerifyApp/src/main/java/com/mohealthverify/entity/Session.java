@@ -12,8 +12,8 @@ public class Session {
     @Column(name = "session_id")
     private Long sessionId;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @Column(name = "applicant_id")
+    private Long applicantId;
 
     @Column(name = "jsessionid")
     private String jsessionid;
