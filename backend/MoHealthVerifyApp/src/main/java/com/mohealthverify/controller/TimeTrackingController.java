@@ -29,13 +29,13 @@ public class TimeTrackingController {
 
     @PostMapping
     public ResponseEntity<?> addTimeRecord(
-            @RequestParam(value = "userId", required = false) Long userId,
+            @RequestParam(value = "applicantId", required = false) Long applicantId,
             HttpSession session,
             @RequestBody List<ApplicantTimeRecord> records) {
-        if (userId == null) {
-            userId = (Long) session.getAttribute("userId");
+        if (applicantId == null) {
+            applicantId = (Long) session.getAttribute("applicantId");
         }
-        if (userId == null) {
+        if (applicantId == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body("User not logged in");
         }
@@ -45,7 +45,7 @@ public class TimeTrackingController {
         }
 
         for (ApplicantTimeRecord record : records) {
-            record.setUserId(userId);
+            record.setapplicantId(applicantId);
         }
         List<ApplicantTimeRecord> saved = service.saveRecords(records);
         Map<String, Object> response = new HashMap<>();
@@ -58,17 +58,17 @@ public class TimeTrackingController {
 
     @GetMapping("/history")
     public ResponseEntity<?> getHistory(
-            @RequestParam(value = "userId", required = false) Long userId,
+            @RequestParam(value = "applicantId", required = false) Long applicantId,
             HttpSession session) {
-        if (userId == null) {
-            userId = (Long) session.getAttribute("userId");
+        if (applicantId == null) {
+            applicantId = (Long) session.getAttribute("applicantId");
         }
-        if (userId == null) {
+        if (applicantId == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body("User not logged in");
         }
 
-        List<ApplicantTimeRecord> records = service.getUserHistory(userId);
+        List<ApplicantTimeRecord> records = service.getUserHistory(applicantId);
 
         return ResponseEntity.ok(records);
     }

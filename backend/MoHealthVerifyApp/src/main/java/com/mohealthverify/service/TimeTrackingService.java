@@ -23,7 +23,7 @@ public class TimeTrackingService {
         return repository.saveAll(records);
     }
 
-    public List<ApplicantTimeRecord> getUserHistory(Long userId) {
-        return repository.findByUserIdOrderByTimeRecordStartingDatetimeDesc(userId);
+    public List<ApplicantTimeRecord> getUserHistory(Long applicantId) {
+        return repository.findByapplicantIdOrderByTimeRecordStartingDatetimeDesc(applicantId);
     }
 }

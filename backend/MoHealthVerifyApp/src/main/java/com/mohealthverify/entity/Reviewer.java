@@ -1,17 +1,16 @@
 package com.mohealthverify.entity;
 
 import jakarta.persistence.*;
-
 import java.time.OffsetDateTime;
 
 @Entity
-@Table(name = "applicants")
-public class User {
+@Table(name = "reviewers")
+public class Reviewer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "applicant_id")
-    private Long id;
+    @Column(name = "reviewer_id")
+    private Long reviewerId;
 
     private String email;
 
@@ -30,12 +29,12 @@ public class User {
     @Column(name = "last_login")
     private OffsetDateTime lastLogin;
 
-    public Long getId() {
-        return id;
+    public Long getReviewerId() {
+        return reviewerId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setReviewerId(Long reviewerId) {
+        this.reviewerId = reviewerId;
     }
 
     public String getEmail() {

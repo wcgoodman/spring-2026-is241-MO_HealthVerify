@@ -1,9 +1,11 @@
 package com.mohealthverify.service;
 
-import com.mohealthverify.entity.User;
+import com.mohealthverify.entity.ApplicationReview;
 import com.mohealthverify.entity.Password;
-import com.mohealthverify.repository.UserRepository;
+import com.mohealthverify.entity.User;
+import com.mohealthverify.repository.ApplicationReviewRepository;
 import com.mohealthverify.repository.PasswordRepository;
+import com.mohealthverify.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,6 +22,9 @@ public class UserService {
     @Autowired
     private PasswordRepository passwordRepository;
 
+    @Autowired
+    private ApplicationReviewRepository applicationReviewRepository;
+
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     // REGISTER
@@ -35,34 +40,44 @@ public class UserService {
         user.setEmail(email);
         user.setDatetimeRegistered(OffsetDateTime.now());
         user.setLastLogin(null);
-        userRepository.save(user);
+
+        User savedUser = userRepository.save(user);
 
         Password pw = new Password();
-        pw.setUserId(user.getId());
+        pw.setApplicantId(savedUser.getId());
         pw.setPasswordHash(passwordEncoder.encode(rawPassword));
         pw.setSalt("BCrypt");
         pw.setPasswordLastUpdated(OffsetDateTime.now());
+
         passwordRepository.save(pw);
 
+        // Create application review when applicant registers
+        ApplicationReview review = new ApplicationReview();
+        review.setApplicantId(savedUser.getId());
+        review.setReviewStatusId(1L); // Open
+
+        applicationReviewRepository.save(review);
     }
 
-    // LOGIN — returns userId if successful
+    // LOGIN — returns applicantId if successful
     public Long loginAndReturnUserId(String email, String rawPassword) {
 
         User user = userRepository.findByEmail(email);
         if (user == null) return null;
 
-        Password pw = passwordRepository.findByUserId(user.getId());
+        Password pw = passwordRepository.findByApplicantId(user.getId());
         if (pw == null) return null;
 
         if (passwordEncoder.matches(rawPassword, pw.getPasswordHash())) {
+            user.setLastLogin(OffsetDateTime.now());
+            userRepository.save(user);
             return user.getId();
         }
 
         return null;
     }
 
-    // GET USER BY ID
+    // GET USER/APPLICANT BY ID
     public User getUserById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
@@ -73,10 +88,9 @@ public class UserService {
         User user = userRepository.findById(id).orElse(null);
 
         if (user == null) {
-            throw new RuntimeException("User not found");
+            throw new RuntimeException("Applicant not found");
         }
 
-        // update fields
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setEmail(email);

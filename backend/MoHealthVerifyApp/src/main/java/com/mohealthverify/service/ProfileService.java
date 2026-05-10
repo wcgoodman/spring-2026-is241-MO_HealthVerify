@@ -21,12 +21,12 @@ public class ProfileService {
         this.userRepository = userRepository;
     }
 
-    public ApplicantProfile updateProfile(Long userId, ProfileUpdateRequest request) {
+    public ApplicantProfile updateProfile(Long applicantId, ProfileUpdateRequest request) {
 
-        User user = userRepository.findById(userId)
+        User user = userRepository.findById(applicantId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        ApplicantProfile profile = profileRepository.findByUserId(userId)
+        ApplicantProfile profile = profileRepository.findByUser_Id(applicantId)
                 .orElse(new ApplicantProfile());
 
         profile.setUser(user);

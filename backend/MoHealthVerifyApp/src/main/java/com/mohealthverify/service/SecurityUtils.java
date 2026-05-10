@@ -33,7 +33,7 @@ public class SecurityUtils {
         throw new RuntimeException("No authenticated user found");
     }
 
-    public Long getCurrentUserId() {
+    public Long getCurrentapplicantId() {
         return getCurrentUser().getId();
     }
 }

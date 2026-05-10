@@ -12,8 +12,8 @@ public class ApplicantTimeRecord {
     @Column(name = "applicant_time_record_id")
     private Long applicantTimeRecordId;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @Column(name = "applicant_id", nullable = false)
+    private Long applicantId;
 
     @Column(name = "time_record_type_id", nullable = false)
     private Long timeRecordTypeId;
@@ -28,8 +28,8 @@ public class ApplicantTimeRecord {
     public Long getApplicantTimeRecordId() { return applicantTimeRecordId; }
     public void setApplicantTimeRecordId(Long id) { this.applicantTimeRecordId = id; }
 
-    public Long getUserId() { return userId; }
-    public void setUserId(Long userId) { this.userId = userId; }
+    public Long getapplicantId() { return applicantId; }
+    public void setapplicantId(Long applicantId) { this.applicantId = applicantId; }
 
     public Long getTimeRecordTypeId() { return timeRecordTypeId; }
     public void setTimeRecordTypeId(Long timeRecordTypeId) { this.timeRecordTypeId = timeRecordTypeId; }
